@@ -1,17 +1,17 @@
 [build-system]
-requires      = ["hatchling"]
+requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
 name = "project"
 version = "0.1.0"
-description = "Add your description here"
+description = "A professional, batteries-included Django project template (uv, Ruff, mypy, pytest, pre-commit, CI)."
 readme = "README.md"
 authors = [{ name = "DonAsako", email = "asako@donasako.fr" }]
 requires-python = ">=3.14"
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
-keywords = []
+keywords = ["django", "template", "boilerplate", "starter", "uv", "ruff", "mypy", "pytest"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -29,9 +29,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage   = "https://donasako.fr/"
+Homepage = "https://donasako.fr/"
 Repository = "https://github.com/DonAsako/SimpleDjangoTemplate"
-Issues     = "https://github.com/DonAsako/SimpleDjangoTemplate/issues"
+Issues = "https://github.com/DonAsako/SimpleDjangoTemplate/issues"
 
 
 [dependency-groups]
@@ -79,9 +79,9 @@ include = ["project", "apps"]
 # ============================================================================
 
 [tool.ruff]
-line-length    = 120
+line-length = 120
 target-version = "py314"
-exclude        = [".venv", "uv.lock", "__pycache__", "pyproject.toml"]
+exclude = [".venv", "uv.lock", "__pycache__", "pyproject.toml"]
 
 [tool.ruff.format]
 quote-style = "preserve"
@@ -194,10 +194,10 @@ select = [
 
 [tool.ruff.lint.flake8-quotes]
 docstring-quotes = "double"
-inline-quotes    = "single"
+inline-quotes = "single"
 
 [tool.ruff.lint.pycodestyle]
-max-doc-length                = 160
+max-doc-length = 160
 ignore-overlong-task-comments = true
 
 [tool.ruff.lint.mccabe]
@@ -206,15 +206,15 @@ max-complexity = 10
 
 [tool.ruff.lint.pylint]
 # Pylint defaults (industry standard)
-max-args                = 5
-max-positional-args     = 5
-max-branches            = 12
-max-statements          = 50
-max-returns             = 6
-max-locals              = 15
-max-nested-blocks       = 5
-max-public-methods      = 20
-max-bool-expr           = 5
+max-args = 5
+max-positional-args = 5
+max-branches = 12
+max-statements = 50
+max-returns = 6
+max-locals = 15
+max-nested-blocks = 5
+max-public-methods = 20
+max-bool-expr = 5
 allow-magic-value-types = ["int", "str", "bytes"]
 
 [tool.ruff.lint.per-file-ignores]
@@ -260,9 +260,9 @@ allow-magic-value-types = ["int", "str", "bytes"]
     "T20",    # print is fine in CLI scripts
 ]
 "**/migrations/*" = [
-    "INP001",  # implicit-namespace-package (Django migrations have no __init__ intent)
-    "S608",    # SQL migrations
-    "RUF012",  # mutable class attrs (generated: dependencies/operations lists)
+    "INP001", # implicit-namespace-package (Django migrations have no __init__ intent)
+    "S608",   # SQL migrations
+    "RUF012", # mutable class attrs (generated: dependencies/operations lists)
 ]
 "manage.py" = [
     "PLC0415", # deferred import inside try/except is the standard manage.py idiom
@@ -274,24 +274,24 @@ allow-magic-value-types = ["int", "str", "bytes"]
 # ============================================================================
 
 [tool.mypy]
-python_version     = "3.14"
-files              = ["project", "apps", "tests"]
-plugins            = ["mypy_django_plugin.main"]
+python_version = "3.14"
+files = ["project", "apps", "tests"]
+plugins = ["mypy_django_plugin.main"]
 namespace_packages = true
-pretty             = true
-show_error_codes   = true
+pretty = true
+show_error_codes = true
 # Strict mode (equivalent to `mypy --strict`, adjustable per-case below)
-disallow_untyped_defs       = true
-disallow_untyped_calls      = true
+disallow_untyped_defs = true
+disallow_untyped_calls = true
 disallow_untyped_decorators = true
-disallow_incomplete_defs    = true
-no_implicit_optional        = true
-strict_equality             = true
-warn_unreachable            = true
-warn_redundant_casts        = true
-warn_unused_ignores         = true
-warn_unused_configs         = true
-warn_return_any             = true
+disallow_incomplete_defs = true
+no_implicit_optional = true
+strict_equality = true
+warn_unreachable = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unused_configs = true
+warn_return_any = true
 # `exclude` is a regex — patterns must be anchored to avoid false matches
 exclude = [
     "^\\.venv/",
@@ -307,17 +307,17 @@ exclude = [
 
 # Tests: relax a bit (untyped fixtures, parametrize, etc.)
 [[tool.mypy.overrides]]
-module                = "tests.*"
+module = "tests.*"
 disallow_untyped_defs = false
 
 # Migrations are generated code — don't type-check them
 [[tool.mypy.overrides]]
-module               = "*.migrations.*"
-ignore_errors        = true
+module = "*.migrations.*"
+ignore_errors = true
 
 # django-environ ships no type stubs / py.typed marker
 [[tool.mypy.overrides]]
-module                 = "environ.*"
+module = "environ.*"
 ignore_missing_imports = true
 
 # Use `ci` settings for type-checking: same as `development` minus dev-only apps
@@ -340,7 +340,7 @@ addopts = [
     "--strict-config",
     "--showlocals",
     "--tb=short",
-    "--reuse-db",  # keep the test DB between runs; add --create-db after migrations change
+    "--reuse-db",       # keep the test DB between runs; add --create-db after migrations change
 ]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
@@ -352,6 +352,7 @@ filterwarnings = [
     "error",
     "ignore::DeprecationWarning:pydantic.*",
     "ignore:Module already imported.*:pytest.PytestAssertRewriteWarning",
+    "ignore:Normally Django will use a connection to the 'postgres' database:RuntimeWarning",
 ]
 
 # ============================================================================
@@ -361,17 +362,19 @@ filterwarnings = [
 
 [tool.coverage.run]
 parallel = true
-branch   = true
-source   = ["project", "apps"]
+branch = true
+source = ["project", "apps"]
 omit = [
     "**/*_test.py",
     "**/test_*.py",
     "**/tests/**",
-    "**/migrations/*",           # generated code
-    "project/wsgi.py",           # server entrypoints (not unit-testable)
+    "**/migrations/*", # generated code
+    "project/wsgi.py", # server entrypoints (not unit-testable)
     "project/asgi.py",
-    "project/settings/production.py",  # env-specific; guarded by `check --deploy`
-    "project/settings/ci.py",          # only active in CI
+    # Env-specific settings: exactly one loads per run (dev locally, ci in CI),
+    "project/settings/development.py",
+    "project/settings/production.py",  # also guarded by `check --deploy`
+    "project/settings/ci.py",
 ]
 
 [tool.coverage.report]

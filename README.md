@@ -1,5 +1,7 @@
 # SimpleDjangoTemplate
 
+[![CI](https://github.com/DonAsako/SimpleDjangoTemplate/actions/workflows/ci.yml/badge.svg)](https://github.com/DonAsako/SimpleDjangoTemplate/actions/workflows/ci.yml)
+
 A professional, batteries-included template for Django projects.
 
 Click **"Use this template"** on GitHub to bootstrap a new repository.
