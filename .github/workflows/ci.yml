@@ -1,0 +1,86 @@
+name: CI
+
+"on":
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  UV_FROZEN: "1"
+
+jobs:
+  quality:
+    name: Lint, type-check & deploy checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Cache pre-commit
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+
+      # Single source of truth: runs ruff, mypy, djlint, yamllint, mdformat,
+      # gitleaks, uv-lock… exactly like the local git hooks.
+      - name: Run pre-commit hooks
+        run: uv run pre-commit run --all-files --show-diff-on-failure
+
+      # Catch production security misconfiguration (SSL/HSTS/cookies, etc.).
+      - name: Django deploy checks (production settings)
+        env:
+          DJANGO_SETTINGS_MODULE: project.settings.production
+          ALLOWED_HOSTS: example.com
+          DATABASE_URL: sqlite:///deploy-check.sqlite3
+        run: |
+          export DJANGO_SECRET_KEY="$(uv run python -c 'from django.core.management.utils import get_random_secret_key as k; print(k())')"
+          uv run python manage.py check --deploy --fail-level WARNING
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: test
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DJANGO_SETTINGS_MODULE: project.settings.ci
+      DATABASE_URL: postgres://test:test@localhost:5432/test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run migrations check
+        run: uv run python manage.py makemigrations --check --dry-run
+
+      - name: Run tests
+        run: uv run pytest --cov
