@@ -23,7 +23,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "django>=6.0.6",
+    "django>=6.1",
     "django-environ>=0.11",
     "psycopg[binary]>=3.3.4",
 ]
@@ -42,7 +42,7 @@ dev = [
     "yamllint",
     "mdformat",
     "gitlint",
-    "pre-commit>=4.6.0",
+    "pre-commit>=4.6.2",
     # Tests
     "pytest",
     "pytest-cov",
@@ -57,7 +57,7 @@ dev = [
     "types-requests",
     "types-jsonschema",
     "django-stubs[compatible-mypy]",
-    "django-debug-toolbar>=4.4",
+    "django-debug-toolbar>=7.1.1",
     "djlint>=1.39.5",
     "mdformat-gfm>=1.0.0",
     "mdformat-frontmatter>=2.1.2",
