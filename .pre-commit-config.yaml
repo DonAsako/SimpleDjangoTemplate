@@ -21,7 +21,7 @@ repos:
         args: [--fix=lf]
 
   - repo: https://github.com/djlint/djLint
-    rev: v1.50.4
+    rev: v1.54.0
     hooks:
       - id: djlint-reformat-django
       - id: djlint-django
@@ -71,7 +71,7 @@ repos:
         stages: [commit-msg]
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.13.8
+    rev: 0.13.9
     hooks:
       - id: uv-lock
 
